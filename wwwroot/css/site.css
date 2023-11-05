@@ -1,0 +1,20 @@
+html {
+    font-size: 14px;
+    background-color: black
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 50px;
+    background-color: black
+}

@@ -1,0 +1,619 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            font-size: 1em;
+            font-family: sans-serif;
+            text-transform: uppercase;
+        }
+
+        .border-top {
+            border-top: 0px solid red !important;
+        }
+
+        .slider {
+            position: relative;
+            height: 88vh;
+            overflow: hidden;
+            display: flex;
+            /*justify-content: center;
+                    align-items: center;*/
+        }
+
+            .slider .slide {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                opacity: 0;
+            }
+
+                .slider .slide.active {
+                    opacity: 1;
+                }
+
+        /*.slide1 {
+                    background-color: black;
+                }
+
+                .slide2 {
+                    background-color: black;
+                }
+
+                .slide3 {
+                    background-color: black;
+                }*/
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .wrapper_0 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .item {
+            background-color: darkgray;
+            border-radius: 10px;
+            vertical-align: central;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .best {
+            font-size: 1vw;
+            text-align: left;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 5px;
+            margin-bottom: 10px;
+            gap: 10px;
+            font-size: medium;
+            background-color: white;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: 0 0;
+            background-image: linear-gradient(white,white);
+        }
+
+        .header {
+            font-size: small;
+            padding: 20px;
+        }
+
+        .data {
+            font-size: 4em;
+        }
+
+        .public_data {
+            font-size: 2.5em;
+        }
+
+        .bestlist {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+        }
+        /* .wrapper div:nth-child(2) {
+                        grid-column: 3;
+                        grid-row: 2 / 4;
+                    }
+
+                    .wrapper div:nth-child(5) {
+                        grid-column: 1 / 3;
+                        grid-row: 1 / 3;
+                    }*/
+    </style>
+</head>
+<body>
+    @* <div class="slide slide1 active">
+    <div class="number">1</div>
+
+    </div>*@
+    <div class="text-center">
+        @*<h1 class="display-4"><font color="green">Визуализация</font> <font color="yellow">производственного</font><font color="red"> цикла</font></h1>
+        <p><b><font color="white">Дата публикации @ViewData["curdate"]</font></b></p>
+        <ul>
+        <li><font color="blue"><b>Производственный цикл </b></font></li>
+        <li><font color="blue"><b>Производство @ViewData["pcycle"] дней, Технологическое время @ViewData["tcycle"] дней , @ViewData["Percentage"] %</b></font></li>
+        <li><font color="blue"><b>Производство(с начала года) @ViewData["p21"] дней, Технологическое время @ViewData["t22"] дней , @ViewData["PercentageYear"] %</b></font></li>
+        <li><font color="blue"><b>Запуск / Выпуск - ежедневный </b></font></li>
+        <li><font color="blue"><b>Производство Задания @ViewData["p31"] / @ViewData["p41"] (шт.), Количество @ViewData["p32"] / @ViewData["p42"] (шт.), Трудоёмкость @ViewData["UserInfo"] / @ViewData["p43"] (мин) </b></font></li>
+        <li><font color="blue"><b>Производство(с начала года) Задания @ViewData["p51"] / @ViewData["p61"] (шт.), Количество @ViewData["p52"] / @ViewData["p62"] (шт.), Трудоёмкость @ViewData["p53"] / @ViewData["p63"] (мин) </b></font></li>
+        </ul>*@
+        @*                <div class="number">1</div>*@
+        <div class="wrapper_0">
+            <div>
+
+                <div class="wrapper">
+                    <div class="item header">
+                        Производственный цикл, дней
+                    </div>
+                    <div class="item header">Технологическое время, %</div>
+                    <div class="item header">
+                        Выпуск, тыс. мин.
+                    </div>
+                    <div class="item header">Опережение, дней</div>
+                    <div class="item data pcycle">@ViewData["pcycle"]</div>
+                    <div class="item data Percentage">@ViewData["Percentage"]</div>
+                    <div class="item data p43">@ViewData["p43"]</div>
+                    <div class="item data neg_adv_current">@ViewData["neg_adv_current"]</div>
+                    <div class="item header">Производственный цикл год, дней</div>
+                    <div class="item header">Технологическое время год, %</div>
+                    <div class="item header">Выпуск год, тыс. мин.</div>
+                    <div class="item header">Опережение год, дней</div>
+                    <div class="item data p21">@ViewData["p21"]</div>
+                    <div class="item data PercentageYear">@ViewData["PercentageYear"]</div>
+                    <div class="item data p63">@ViewData["p63"]</div>
+                    <div class="item data negative_advance">@ViewData["negative_advance"]</div>
+                    <div class="item header">Расчётный производственный цикл, дней</div>
+                    <div class="item header">доп. оборотный капитал, тыс. руб.</div>
+                    <div class="item header">Рабочих дней год</div>
+                    <div class="item header">Дата публикации</div>
+                    <div class="item data p71">@ViewData["p111"]</div>
+                    <div class="item data p71">@ViewData["p113"]</div>
+                    <div class="item data p71">@ViewData["day2"]</div>
+                    <div class="item public_data p71">@ViewData["Created"]</div>
+                </div>
+                <div class="header">
+                    <div class="item header">
+                        Сделка за текущий месяц, тыс. мин.
+                    </div>
+                    <div class="header">
+                        <div class="item best name_cur1">1. @ViewData["best_name_cur"], @ViewData["best_time_c1"]</div>
+                        <div class="item best name_cur2">2. @ViewData["best_name_cur2"], @ViewData["best_time_c2"]</div>
+                        <div class="item best name_cur3">3. @ViewData["best_name_cur3"], @ViewData["best_time_c3"]</div>
+                        <div class="item best name_cur4">4. @ViewData["best_name_cur4"], @ViewData["best_time_c4"]</div>
+                        <div class="item best name_cur5">5. @ViewData["best_name_cur5"], @ViewData["best_time_c5"]</div>
+                        <div class="item best name_cur6">6. @ViewData["best_name_cur6"], @ViewData["best_time_c6"]</div>
+                        <div class="item best name_cur7">7. @ViewData["best_name_cur7"], @ViewData["best_time_c7"]</div>
+                        <div class="item best name_cur8">8. @ViewData["best_name_cur8"], @ViewData["best_time_c8"]</div>
+                        <div class="item best name_cur9">9. @ViewData["best_name_cur9"], @ViewData["best_time_c9"]</div>
+                        <div class="item best name_cur10">10. @ViewData["best_name_cur10"], @ViewData["best_time_c10"]</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="wrapper">
+
+                    <div class="item header">
+                        Задания НЗП, шт.
+                    </div>
+                    <div class="item header">Изделия НЗП, тыс. шт.</div>
+                    <div class="item header">
+                        Трудоемкость (фактическая) НЗП, тыс. мин.
+                    </div>
+                    <div class="item header">Трудоемкость (процессная) НЗП, тыс. мин.</div>
+                    <div class="item data p71">@ViewData["p71"]</div>
+                    <div class="item data p71">@ViewData["p72"]</div>
+                    <div class="item data p71">@ViewData["p74"]</div>
+                    <div class="item data p71">@ViewData["p75"]</div>
+                    <div class="item header">Задания НЗП 15, шт.</div>
+                    <div class="item header">Изделия НЗП 15, тыс. шт.</div>
+                    <div class="item header">Трудоемкость (фактическая) НЗП 15, тыс. мин.</div>
+                    <div class="item header">Трудоемкость (процессная) НЗП 15, тыс. мин.</div>
+                    <div class="item data p71">@ViewData["p81"]</div>
+                    <div class="item data p71">@ViewData["p82"]</div>
+                    <div class="item data p84">@ViewData["p84"]</div>
+                    <div class="item data p71">@ViewData["p85"]</div>
+                    <div class="item header"><br><br>Изделий в задании, шт.</div>
+                    <div class="item data p71">@ViewData["waybill"]</div>
+                    <div class="item header"><br><br>Трудоемкость (полная) в задании, тыс. мин.</div>
+                    <div class="item data p71">@ViewData["quantity_per_onewaybill"]</div>
+                </div>
+                <div class="header">
+                    <div class="item header">
+                        Сделка за прошлый месяц, тыс. мин.
+                    </div>
+                    <div class="header">
+                        <div class="item best name_month1">1. @ViewData["best_name_month"], @ViewData["best_time_month"]</div>
+                        <div class="item best name_month2">2. @ViewData["best_name_month2"], @ViewData["best_time_month2"]</div>
+                        <div class="item best name_month3">3. @ViewData["best_name_month3"], @ViewData["best_time_month3"]</div>
+                        <div class="item best name_month4">4. @ViewData["best_name_month4"], @ViewData["best_time_month4"]</div>
+                        <div class="item best name_month5">5. @ViewData["best_name_month5"], @ViewData["best_time_month5"]</div>
+                        <div class="item best name_month6">6. @ViewData["best_name_month6"], @ViewData["best_time_month6"]</div>
+                        <div class="item best name_month7">7. @ViewData["best_name_month7"], @ViewData["best_time_month7"]</div>
+                        <div class="item best name_month8">8. @ViewData["best_name_month8"], @ViewData["best_time_month8"]</div>
+                        <div class="item best name_month9">9. @ViewData["best_name_month9"], @ViewData["best_time_month9"]</div>
+                        <div class="item best name_month10">10. @ViewData["best_name_month10"], @ViewData["best_time_month10"]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="wrapper_0">
+        <div>
+
+        <div class="header">
+        <div class="item header">
+        Сделка за текущий месяц, тыс. мин.
+        </div>
+        <div class="header">
+        <div class="item best name_cur1">1. @ViewData["best_name_cur"], @ViewData["best_time_cur"]</div>
+        <div class="item best name_cur2">2. @ViewData["best_name_cur2"], @ViewData["best_time_cur2"]</div>
+        <div class="item best name_cur3">3. @ViewData["best_name_cur3"], @ViewData["best_time_cur3"]</div>
+        <div class="item best name_cur4">4. @ViewData["best_name_cur4"], @ViewData["best_time_cur4"]</div>
+        <div class="item best name_cur5">5. @ViewData["best_name_cur5"], @ViewData["best_time_cur5"]</div>
+        <div class="item best name_cur6">6. @ViewData["best_name_cur6"], @ViewData["best_time_cur6"]</div>
+        <div class="item best name_cur7">7. @ViewData["best_name_cur7"], @ViewData["best_time_cur7"]</div>
+        <div class="item best name_cur8">8. @ViewData["best_name_cur8"], @ViewData["best_time_cur8"]</div>
+        <div class="item best name_cur9">9. @ViewData["best_name_cur9"], @ViewData["best_time_cur9"]</div>
+        <div class="item best name_cur10">10. @ViewData["best_name_cur10"], @ViewData["best_time_cur10"]</div>
+        </div>
+        </div>
+
+
+        </div>
+
+        <div>
+        <div class="header">
+        <div class="item header">
+        Сделка за прошлый месяц, тыс. мин.
+        </div>
+        <div class="header">
+        <div class="item best name_month1">1. @ViewData["best_name_month"], @ViewData["best_time_month"]</div>
+        <div class="item best name_month2">2. @ViewData["best_name_month2"], @ViewData["best_time_month2"]</div>
+        <div class="item best name_month3">3. @ViewData["best_name_month3"], @ViewData["best_time_month3"]</div>
+        <div class="item best name_month4">4. @ViewData["best_name_month4"], @ViewData["best_time_month4"]</div>
+        <div class="item best name_month5">5. @ViewData["best_name_month5"], @ViewData["best_time_month5"]</div>
+        <div class="item best name_month6">6. @ViewData["best_name_month6"], @ViewData["best_time_month6"]</div>
+        <div class="item best name_month7">7. @ViewData["best_name_month7"], @ViewData["best_time_month7"]</div>
+        <div class="item best name_month8">8. @ViewData["best_name_month8"], @ViewData["best_time_month8"]</div>
+        <div class="item best name_month9">9. @ViewData["best_name_month9"], @ViewData["best_time_month9"]</div>
+        <div class="item best name_month10">10. @ViewData["best_name_month10"], @ViewData["best_time_month10"]</div>
+        </div>
+        </div>
+        </div>*@
+
+    </div>
+    @* <div class="wrapper_0">
+    <div>
+    <div class="header">
+    <div class="item header">
+    Сделка за текущий месяц, тыс. мин.
+    </div>
+    <div class="item header">
+
+    Сделка за прошлый месяц, тыс. мин.
+
+    </div>
+    <div class="item best name_cur1">1. @ViewData["best_name_cur"], @ViewData["best_time_cur"]</div>
+    <div class="item best name_cur2">2. @ViewData["best_name_cur2"], @ViewData["best_time_cur2"]</div>
+    <div class="item best name_cur3">3. @ViewData["best_name_cur3"], @ViewData["best_time_cur3"]</div>
+    <div class="item best name_cur4">4. @ViewData["best_name_cur4"], @ViewData["best_time_cur4"]</div>
+    <div class="item best name_cur5">5. @ViewData["best_name_cur5"], @ViewData["best_time_cur5"]</div>
+    <div class="item best name_cur6">6. @ViewData["best_name_cur6"], @ViewData["best_time_cur6"]</div>
+    <div class="item best name_cur7">7. @ViewData["best_name_cur7"], @ViewData["best_time_cur7"]</div>
+    <div class="item best name_cur8">8. @ViewData["best_name_cur8"], @ViewData["best_time_cur8"]</div>
+    <div class="item best name_cur9">9. @ViewData["best_name_cur9"], @ViewData["best_time_cur9"]</div>
+    <div class="item best name_cur10">10. @ViewData["best_name_cur10"], @ViewData["best_time_cur10"]</div>
+    </div>
+    <div>
+    <div class="header">
+    <div class="item best name_month1">1. @ViewData["best_name_month"], @ViewData["best_time_month"]</div>
+    <div class="item best name_month2">2. @ViewData["best_name_month2"], @ViewData["best_time_month2"]</div>
+    <div class="item best name_month3">3. @ViewData["best_name_month3"], @ViewData["best_time_month3"]</div>
+    <div class="item best name_month4">4. @ViewData["best_name_month4"], @ViewData["best_time_month4"]</div>
+    <div class="item best name_month5">5. @ViewData["best_name_month5"], @ViewData["best_time_month5"]</div>
+    <div class="item best name_month6">6. @ViewData["best_name_month6"], @ViewData["best_time_month6"]</div>
+    <div class="item best name_month7">7. @ViewData["best_name_month7"], @ViewData["best_time_month7"]</div>
+    <div class="item best name_month8">8. @ViewData["best_name_month8"], @ViewData["best_time_month8"]</div>
+    <div class="item best name_month9">9. @ViewData["best_name_month9"], @ViewData["best_time_month9"]</div>
+    <div class="item best name_month10">10. @ViewData["best_name_month10"], @ViewData["best_time_month10"]</div>
+    </div>*@
+    <@*div class="item header">
+           Выпуск, тыс.
+           </div>
+           <div class="item header">Опережение</div>
+           <div class="item data pcycle">@ViewData["pcycle"]</div>
+           <div class="item data Percentage">@ViewData["Percentage"]%</div>
+           <div class="item data p43">@ViewData["p43"]</div>
+           </div>*@
+    @* </div>
+           </div>
+           </div>*@
+    @* <div class="slide">*@
+    @*<ul>
+           <li><font color="blue"><b>Незавершённое производство Количество(шт.), Трудоёмкость</b></font></li>
+           <li><font color="blue"><b>Производство @ViewData["p71"] полная @ViewData["p72"] фактическая @ViewData["p73"] процессная @ViewData["p74"] (мин) </b></font></li>
+           <li><font color="blue"><b>Незавершённое производство(Запуск старше 15 дней) Изделия(шт.), Трудоёмкость </b></font></li>
+           <li><font color="blue"><b>Производство @ViewData["p81"] полная @ViewData["p82"] фактическая @ViewData["p83"] процессная @ViewData["p84"] (мин) </b></font></li>
+           <li><font color="red"><b> Рабочих дней @ViewData["day2"], опережение - @ViewData["negative_advance"] дня</b></font></li>
+           <li><font color="red"><b> Задания: @ViewData["waybill"] (шт.), трудоемкость (полная): @ViewData["quantity_per_onewaybill"] (мин)</b></font></li>
+           </ul>*@
+    @*<div class="wrapper">
+           <div class="item header">
+           Производственный цикл, дней
+           </div>
+           <div class="item header">Технологическое время, %</div>
+           <div class="item header">
+           Выпуск, тыс. мин.
+           </div>
+           <div class="item header">Опережение, дней</div>
+           <div class="item data pcycle">@ViewData["pcycle"]</div>
+           <div class="item data Percentage">@ViewData["Percentage"]</div>
+           <div class="item data p43">@ViewData["p43"]</div>
+           <div class="item data neg_adv_current">@ViewData["neg_adv_current"]</div>
+           <div class="item header">Производственный цикл год, дней</div>
+           <div class="item header">Технологическое время год, %</div>
+           <div class="item header">Выпуск год, тыс. мин.</div>
+           <div class="item header">Опережение год, дней</div>
+           <div class="item data p21">@ViewData["p21"]</div>
+           <div class="item data PercentageYear">@ViewData["PercentageYear"]</div>
+           <div class="item data p63">@ViewData["p63"]</div>
+           <div class="item data negative_advance">@ViewData["negative_advance"]</div>
+           <div class="item header">Расчётный производственный цикл, дней</div>
+           <div class="item header">доп. оборотный капитал, тыс. руб.</div>
+           <div class="item header">Рабочих дней год</div>
+           <div class="item header">Дата публикации</div>
+           <div class="item data p71">@ViewData["p111"]</div>
+           <div class="item data p71">@ViewData["p113"]</div>
+           <div class="item data p71">@ViewData["day2"]</div>
+           <div class="item public_data p71">@ViewData["Created"]</div>
+           <div class="item header">
+           Задания НЗП, шт.
+           </div>
+           <div class="item header">Изделия НЗП, тыс. шт.</div>
+           <div class="item header">
+           Трудоемкость (фактическая) НЗП, тыс. мин.
+           </div>
+           <div class="item header">Трудоемкость (процессная) НЗП, тыс. мин.</div>
+           <div class="item data p71">@ViewData["p71"]</div>
+           <div class="item data p71">@ViewData["p72"]</div>
+           <div class="item data p71">@ViewData["p74"]</div>
+           <div class="item data p71">@ViewData["p75"]</div>
+           <div class="item header">Задания НЗП 15, шт.</div>
+           <div class="item header">Изделия НЗП 15, тыс. шт.</div>
+           <div class="item header">Трудоемкость (фактическая) НЗП 15, тыс. мин.</div>
+           <div class="item header">Трудоемкость (процессная) НЗП 15, тыс. мин.</div>
+           <div class="item data p71">@ViewData["p81"]</div>
+           <div class="item data p71">@ViewData["p82"]</div>
+           <div class="item data p84">@ViewData["p84"]</div>
+           <div class="item data p71">@ViewData["p85"]</div>
+           <div class="item header"><br><br>Изделий в задании, шт.</div>
+           <div class="item data p71">@ViewData["waybill"]</div>
+           <div class="item header"><br><br>Трудоемкость (полная) в задании, тыс. мин.</div>
+           <div class="item data p71">@ViewData["quantity_per_onewaybill"]</div>
+           </div>*@
+    @* <div class="number">2</div>*@
+    @* </div>
+           <div class="slide">*@
+    @*<style>
+           table {
+           border-collapse: collapse;
+           width: 100%;
+           block-size:auto;
+           }
+           td {
+           border: 1px solid #ccc;
+           height: 80px;
+           text-align: center;
+           }
+           </style>*@
+    @* <div class="wrapper">
+           <div class="item header">
+           Производственный цикл, дней
+           </div>
+           <div class="item header">Технологическое время, %</div>
+           <div class="item header">
+           Выпуск, тыс. мин.
+           </div>
+           <div class="item header">Опережение, дней</div>
+           <div class="item data pcycle">@ViewData["pcycle"]</div>
+           <div class="item data Percentage">@ViewData["Percentage"]</div>
+           <div class="item data p43">@ViewData["p43"]</div>
+           <div class="item data neg_adv_current">@ViewData["neg_adv_current"]</div>
+           <div class="item header">Производственный цикл год, дней</div>
+           <div class="item header">Технологическое время год, %</div>
+           <div class="item header">Выпуск год, тыс. мин.</div>
+           <div class="item header">Опережение год, дней</div>
+           <div class="item data p21">@ViewData["p21"]</div>
+           <div class="item data PercentageYear">@ViewData["PercentageYear"]</div>
+           <div class="item data p63">@ViewData["p63"]</div>
+           <div class="item data negative_advance">@ViewData["negative_advance"]</div>
+           <div class="item header">Расчётный производственный цикл, дней</div>
+           <div class="item header">доп. оборотный капитал, тыс. руб.</div>
+           <div class="item header">Рабочих дней год</div>
+           <div class="item header">Дата публикации</div>
+           <div class="item data p71">@ViewData["p111"]</div>
+           <div class="item data p71">@ViewData["p113"]</div>
+           <div class="item data p71">@ViewData["day2"]</div>
+           <div class="item public_data p71">@ViewData["Created"]</div>
+           </div>
+           </div>
+           </div>*@
+
+    <script>
+$(document).ready(function () {
+    COLORS = { green: "#008744", yellow: "#ffa700", red: "#d62d20", blue: "#0057e7", black: "#000000", white: "#ffffff", gray: "#cccccc" };
+
+    var percentage = parseFloat(@ViewData["Percentage"]);
+    var percentageYear = parseFloat(@ViewData["PercentageYear"]);
+    var neg_adv_cur = parseFloat(@ViewData["neg_adv_current"]);
+    var neg_adv_year = parseFloat(@ViewData["negative_advance"]);
+    var p71 = parseFloat(@ViewData["p71"]);
+    $(".p71").css("background", COLORS.white);
+    var p84 = parseFloat(@ViewData["p84"]);
+    var p74 = parseFloat(@ViewData["p74"]);
+    var perc = p84 / p74 * 100;
+
+    if (percentage < 60) {
+        $(".pcycle").css("background", COLORS.red);
+        $(".Percentage").css("background", COLORS.red);
+    } else if (percentage < 80) {
+        $(".pcycle").css("background", COLORS.yellow);
+        $(".Percentage").css("background", COLORS.yellow);
+    } else {
+        $(".pcycle").css("background", COLORS.green);
+        $(".Percentage").css("background", COLORS.green);
+    }
+
+    $(".p43").css("background", COLORS.white);
+
+    if (neg_adv_cur < -1) {
+
+        $(".neg_adv_current").css("background", COLORS.red);
+    } else if (neg_adv_cur < 0) {
+
+        $(".neg_adv_current").css("background", COLORS.yellow);
+    } else {
+
+        $(".neg_adv_current").css("background", COLORS.green);
+    }
+
+    if (percentageYear < 60) {
+        $(".p21").css("background", COLORS.red);
+        $(".PercentageYear").css("background", COLORS.red);
+    } else if (percentageYear < 80) {
+        $(".p21").css("background", COLORS.yellow);
+        $(".PercentageYear").css("background", COLORS.yellow);
+    } else {
+        $(".p21").css("background", COLORS.green);
+        $(".PercentageYear").css("background", COLORS.green);
+    }
+
+    $(".p63").css("background", COLORS.white);
+
+    if (neg_adv_year < -1) {
+
+        $(".negative_advance").css("background", COLORS.red);
+    } else if (neg_adv_year < 0) {
+
+        $(".negative_advance").css("background", COLORS.yellow);
+    } else {
+
+        $(".negative_advance").css("background", COLORS.green);
+    }
+
+    if (perc < 20) {
+        $(".p84").css("background", COLORS.green);
+    }
+    else if (perc >= 20 <= 40) {
+        $(".p84").css("background", COLORS.yellow);
+    }
+    else {
+        $(".p84").css("background", COLORS.red);
+    }
+
+
+    var cur_time = parseFloat(@ViewData["best_time_cur"]).toFixed(3);
+    var cur_time1 = parseFloat(@ViewData["best_time_cur"]);
+    cur_time1 = cur_time1 / cur_time * 100;
+    $(".name_cur1").css("background-size", cur_time1 + "%");
+    $(".name_cur1").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time2 = parseFloat(@ViewData["best_time_cur2"]);
+    cur_time2 = cur_time2 * 100 / cur_time;
+    $(".name_cur2").css("background-size", cur_time2 + "%");
+    $(".name_cur2").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time3 = parseFloat(@ViewData["best_time_cur3"]);
+    //alert(cur_time3);
+
+    cur_time3 = cur_time3 / cur_time * 100;
+
+    $(".name_cur3").css("background-size", cur_time3 + "%");
+    $(".name_cur3").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time4 = parseFloat(@ViewData["best_time_cur4"]);
+    cur_time4 = cur_time4 / cur_time * 100;
+    $(".name_cur4").css("background-size", cur_time4 + "%");
+    $(".name_cur4").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time5 = parseFloat(@ViewData["best_time_cur5"]);
+    cur_time5 = cur_time5 / cur_time * 100;
+    $(".name_cur5").css("background-size", cur_time5 + "%");
+    $(".name_cur5").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time6 = parseFloat(@ViewData["best_time_cur6"]);
+    cur_time6 = cur_time6 / cur_time * 100;
+    $(".name_cur6").css("background-size", cur_time6 + "%");
+    $(".name_cur6").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time7 = parseFloat(@ViewData["best_time_cur7"]);
+    cur_time7 = cur_time7 / cur_time * 100;
+    $(".name_cur7").css("background-size", cur_time7 + "%");
+    $(".name_cur7").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time8 = parseFloat(@ViewData["best_time_cur8"]);
+    cur_time8 = cur_time8 * 100 / cur_time;
+    $(".name_cur8").css("background-size", cur_time8 + "%");
+    $(".name_cur8").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time9 = parseFloat(@ViewData["best_time_cur9"]);
+    cur_time9 = cur_time9 * 100 / cur_time;
+    $(".name_cur9").css("background-size", cur_time9 + "%");
+    $(".name_cur9").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+    var cur_time10 = parseFloat(@ViewData["best_time_cur10"]);
+    cur_time10 = cur_time10 * 100 / cur_time;
+    $(".name_cur10").css("background-size", cur_time10 + "%");
+    $(".name_cur10").css("background-image", "linear-gradient(" + COLORS.blue + ", " + COLORS.blue + ")");
+
+    var month_time = parseFloat(@ViewData["best_time_month"]);
+    var month_time1 = parseFloat(@ViewData["best_time_month"]);
+    month_time1 = month_time1 / month_time1 * 100;
+    $(".name_month1").css("background-size", month_time1 + "%");
+    $(".name_month1").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time2 = parseFloat(@ViewData["best_time_month2"]);
+    month_time2 = month_time2 / month_time * 100;
+    $(".name_month2").css("background-size", month_time2 + "%");
+    $(".name_month2").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time3 = parseFloat(@ViewData["best_time_month3"]);
+    month_time3 = month_time3 / month_time * 100;
+    $(".name_month3").css("background-size", month_time3 + "%");
+    $(".name_month3").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time4 = parseFloat(@ViewData["best_time_month4"]);
+    month_time4 = month_time4 / month_time * 100;
+    $(".name_month4").css("background-size", month_time4 + "%");
+    $(".name_month4").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time5 = parseFloat(@ViewData["best_time_month5"]);
+    month_time5 = month_time5 / month_time * 100;
+    $(".name_month5").css("background-size", month_time5 + "%");
+    $(".name_month5").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time6 = parseFloat(@ViewData["best_time_month6"]);
+    month_time6 = month_time6 / month_time * 100;
+    $(".name_month6").css("background-size", month_time6 + "%");
+    $(".name_month6").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time7 = parseFloat(@ViewData["best_time_month7"]);
+    month_time7 = month_time7 / month_time * 100;
+    $(".name_month7").css("background-size", month_time7 + "%");
+    $(".name_month7").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time8 = parseFloat(@ViewData["best_time_month8"]);
+    month_time8 = month_time8 / month_time * 100;
+    $(".name_month8").css("background-size", month_time8 + "%");
+    $(".name_month8").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time9 = parseFloat(@ViewData["best_time_month9"]);
+    month_time9 = month_time9 / month_time * 100;
+    $(".name_month9").css("background-size", month_time9 + "%");
+    $(".name_month9").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+    var month_time10 = parseFloat(@ViewData["best_time_month10"]);
+    month_time10 = month_time10 / month_time * 100;
+    $(".name_month10").css("background-size", month_time10 + "%");
+    $(".name_month10").css("background-image", "linear-gradient(" + COLORS.green + ", " + COLORS.green + ")");
+
+    var slides = document.querySelectorAll('.slider .slide');
+    var currentSlide = 0;
+
+    //function changeSlide() {
+    //    slides[currentSlide].classList.remove('active');
+    //    currentSlide = (currentSlide + 1) % slides.length;
+    //    slides[currentSlide].classList.add('active');
+
+    //}
+    //setInterval(changeSlide, 3000);
+
+})
+</script>
+</body>
+</html>
+
